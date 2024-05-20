@@ -18,3 +18,20 @@ export const getSingleProductService = async (productID: string) => {
   const result = await productModel.findOne({ _id: productID });
   return result;
 };
+
+// Update a single product
+export const updateSingleProductService = async (
+  productID: string,
+  productData: Products
+) => {
+  const result = await productModel.findByIdAndUpdate(
+    { _id: productID },
+    productData
+  );
+  return result;
+};
+
+export const deleteSingleProductService = async (productID: string) => {
+  const result = await productModel.deleteOne({ _id: productID });
+  return result;
+};

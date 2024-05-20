@@ -12,5 +12,9 @@ router.post("/products", products_controller_1.createProducts);
 // Get all products
 router.get("/products", products_controller_1.getProducts);
 // Get single product
-router.get("/products/:productID", products_controller_1.getSingleProduct);
+router.get("/products/:productId", products_controller_1.getSingleProduct);
+// Update a single product
+router.put("/products/:productId", products_controller_1.updateSingleProduct);
+// Delete a single product
+router.delete("/products/:productId", products_controller_1.deleteSingleProduct);
 exports.ProductsRoute = router;

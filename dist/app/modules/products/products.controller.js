@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSingleProduct = exports.getProducts = exports.createProducts = void 0;
+exports.deleteSingleProduct = exports.updateSingleProduct = exports.getSingleProduct = exports.getProducts = exports.createProducts = void 0;
 const product_services_1 = require("./product.services");
 // Create a product
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -67,3 +67,41 @@ const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getSingleProduct = getSingleProduct;
+// Update a single product
+const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productID = req.params.productId;
+        const productData = req.body;
+        const result = yield (0, product_services_1.updateSingleProductService)(productID, productData);
+        res.status(200).json({
+            success: true,
+            message: "Product updated successfully!",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "An error occured while updating your product!",
+        });
+    }
+});
+exports.updateSingleProduct = updateSingleProduct;
+const deleteSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productID = req.params.productId;
+        const result = yield (0, product_services_1.deleteSingleProductService)(productID);
+        res.status(200).json({
+            success: true,
+            message: "Product deleted successfully!",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "An error occured while deleting your product!",
+        });
+    }
+});
+exports.deleteSingleProduct = deleteSingleProduct;
