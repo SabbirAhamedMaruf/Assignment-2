@@ -10,5 +10,5 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 // Routes will go here
-app.use("/api/", products_route_1.ProductsRoute);
+app.use("/api", products_route_1.ProductsRoute);
 exports.default = app;

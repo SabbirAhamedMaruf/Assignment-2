@@ -1,5 +1,27 @@
 import { Schema, model } from "mongoose";
-import { Products } from "./products.interface";
+import { Inventory, Products, Variants } from "./products.interface";
+
+const VariantsSchema = new Schema<Variants>({
+  type: {
+    type: String,
+    required: true,
+  },
+  value: {
+    type: String,
+    required: true,
+  },
+});
+
+const InventorySchema = new Schema<Inventory>({
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  inStock: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const productSchema = new Schema<Products>({
   name: {
@@ -14,7 +36,7 @@ const productSchema = new Schema<Products>({
     type: Number,
     required: true,
   },
-  catagory: {
+  category: {
     type: String,
     required: true,
   },
@@ -23,11 +45,11 @@ const productSchema = new Schema<Products>({
     required: true,
   },
   variants: {
-    type: Object,
+    type: [VariantsSchema],
     required: true,
   },
   inventory: {
-    type: Object,
+    type: InventorySchema,
     required: true,
   },
 });

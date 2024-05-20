@@ -1,9 +1,6 @@
-export type Color = string[];
-export type Size = string[];
-export type Style = string[];
-
 export type Variants = {
-  variants: Color | Size | Style;
+  type: string;
+  value: string;
 };
 
 export type Inventory = {
@@ -15,8 +12,8 @@ export type Products = {
   name: string;
   description: string;
   price: number;
-  catagory: string;
+  category: string;
   tags: string[];
-  variants: Variants;
+  variants: Variants[];
   inventory: Inventory;
 };

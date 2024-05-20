@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createProducts = void 0;
+exports.getSingleProduct = exports.getProducts = exports.createProducts = void 0;
 const product_services_1 = require("./product.services");
+// Create a product
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productData = req.body;
@@ -29,3 +30,40 @@ const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.createProducts = createProducts;
+// Get all products
+const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield (0, product_services_1.getAllProductsService)();
+        res.status(200).json({
+            success: true,
+            message: "Products fetched successfully!",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "An error occured while fetching products!",
+        });
+    }
+});
+exports.getProducts = getProducts;
+// Get a single product
+const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productID = req.params.productID;
+        const result = yield (0, product_services_1.getSingleProductService)(productID);
+        res.status(200).json({
+            success: true,
+            message: "Product fetched successfully!",
+            data: result,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "An error occured while fetching your product!",
+        });
+    }
+});
+exports.getSingleProduct = getSingleProduct;
