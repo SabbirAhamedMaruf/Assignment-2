@@ -23,7 +23,7 @@ const InventorySchema = new Schema<Inventory>({
   },
 });
 
-const productSchema = new Schema<Products>({
+const ProductSchema = new Schema<Products>({
   name: {
     type: String,
     required: true,
@@ -54,6 +54,6 @@ const productSchema = new Schema<Products>({
   },
 });
 
-const ProductModel = model<Products>("Products", productSchema);
+const ProductModel = model<Products>("Products", ProductSchema);
 
 export default ProductModel;

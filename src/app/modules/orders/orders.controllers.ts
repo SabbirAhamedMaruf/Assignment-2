@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { JoiValidatorOrdersSchema } from "./JoiValidatorOrderSchema";
 import {
   createSingleOrderService,
   getOrdersService,
@@ -9,22 +10,35 @@ import {
 export const createSingleOrder = async (req: Request, res: Response) => {
   try {
     const currentOrderData = req.body;
-    // getting product quantity
-    const currentQuantity = await getProductQuantity(
-      currentOrderData?.productId
-    );
-    // Creating order
-    if ((currentQuantity?.quantity as number) > 0 && currentQuantity?.inStock) {
+    // Validation of data using JOI package
+    const { error, value } =
+      JoiValidatorOrdersSchema.validate(currentOrderData);
+    if (!error) {
+      // getting product quantity
+      const currentQuantity = await getProductQuantity(
+        currentOrderData?.productId
+      );
+      // Creating order
       if (
-        (currentQuantity?.quantity as number) - currentOrderData?.quantity >=
-        0
+        (currentQuantity?.quantity as number) > 0 &&
+        currentQuantity?.inStock
       ) {
-        const result = await createSingleOrderService(currentOrderData);
-        res.status(200).json({
-          success: true,
-          message: "Order created successfully!",
-          data: result,
-        });
+        if (
+          (currentQuantity?.quantity as number) - currentOrderData?.quantity >=
+          0
+        ) {
+          const result = await createSingleOrderService(currentOrderData);
+          res.status(200).json({
+            success: true,
+            message: "Order created successfully!",
+            data: result,
+          });
+        } else {
+          res.status(500).json({
+            success: false,
+            message: "Insufficient quantity available in inventory!",
+          });
+        }
       } else {
         res.status(500).json({
           success: false,
@@ -34,7 +48,8 @@ export const createSingleOrder = async (req: Request, res: Response) => {
     } else {
       res.status(500).json({
         success: false,
-        message: "Insufficient quantity available in inventory!",
+        message: "An error occured while creating order!",
+        error: error?.details,
       });
     }
   } catch (error) {

@@ -23,24 +23,24 @@ export const getAllProductsService = async (
 };
 
 // Get single product
-export const getSingleProductService = async (productID: string) => {
-  const result = await ProductModel.findOne({ _id: productID });
+export const getSingleProductService = async (productId: string) => {
+  const result = await ProductModel.findOne({ _id: productId });
   return result;
 };
 
 // Update a single product
 export const updateSingleProductService = async (
-  productID: string,
+  productId: string,
   productData: Products
 ) => {
-  const result = await ProductModel.findByIdAndUpdate(
-    { _id: productID },
-    productData
-  );
+  // updating product
+  await ProductModel.findByIdAndUpdate({ _id: productId }, productData);
+  // fetching updated data
+  const result = ProductModel.findOne({ _id: productId });
   return result;
 };
 
-export const deleteSingleProductService = async (productID: string) => {
-  const result = await ProductModel.deleteOne({ _id: productID });
+export const deleteSingleProductService = async (productId: string) => {
+  const result = await ProductModel.deleteOne({ _id: productId });
   return result;
 };

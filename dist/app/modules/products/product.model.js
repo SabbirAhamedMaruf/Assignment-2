@@ -21,7 +21,7 @@ const InventorySchema = new mongoose_1.Schema({
         required: true,
     },
 });
-const productSchema = new mongoose_1.Schema({
+const ProductSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
@@ -51,5 +51,5 @@ const productSchema = new mongoose_1.Schema({
         required: true,
     },
 });
-const ProductModel = (0, mongoose_1.model)("Products", productSchema);
+const ProductModel = (0, mongoose_1.model)("Products", ProductSchema);
 exports.default = ProductModel;

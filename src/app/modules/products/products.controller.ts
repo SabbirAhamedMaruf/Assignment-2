@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { JoiValidatorProductSchema } from "./JoiValidatorProductSchema";
 import {
   createProductService,
   deleteSingleProductService,
@@ -11,12 +12,22 @@ import {
 export const createProducts = async (req: Request, res: Response) => {
   try {
     const productData = req.body;
-    const result = await createProductService(productData);
-    res.status(200).json({
-      success: true,
-      message: "Product created successfully!",
-      data: result,
-    });
+    // Validation of data using JOI package
+    const { error, value } = JoiValidatorProductSchema.validate(productData);
+    if (!error) {
+      const result = await createProductService(value);
+      res.status(200).json({
+        success: true,
+        message: "Product created successfully!",
+        data: result,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "An error occured while creating product!",
+        error: error?.details,
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -69,8 +80,8 @@ export const getProducts = async (req: Request, res: Response) => {
 // Get a single product
 export const getSingleProduct = async (req: Request, res: Response) => {
   try {
-    const productID = req.params.productID;
-    const result = await getSingleProductService(productID);
+    const productId = req.params.productId;
+    const result = await getSingleProductService(productId);
     res.status(200).json({
       success: true,
       message: "Product fetched successfully!",
@@ -87,14 +98,24 @@ export const getSingleProduct = async (req: Request, res: Response) => {
 // Update a single product
 export const updateSingleProduct = async (req: Request, res: Response) => {
   try {
-    const productID = req.params.productId;
+    const productId = req.params.productId;
     const productData = req.body;
-    const result = await updateSingleProductService(productID, productData);
-    res.status(200).json({
-      success: true,
-      message: "Product updated successfully!",
-      data: result,
-    });
+    // Validation of data using JOI package
+    const { error, value } = JoiValidatorProductSchema.validate(productData);
+    if (!error) {
+      const result = await updateSingleProductService(productId, value);
+      res.status(200).json({
+        success: true,
+        message: "Product updated successfully!",
+        data: result,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "An error occured while updating your product!",
+        error: error?.details,
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -104,11 +125,9 @@ export const updateSingleProduct = async (req: Request, res: Response) => {
 };
 
 export const deleteSingleProduct = async (req: Request, res: Response) => {
-  // TODO: in assignment sample  "data": null <== this format should be followd. rather than deleted count 1
-
   try {
-    const productID = req.params.productId;
-    const result = await deleteSingleProductService(productID);
+    const productId = req.params.productId;
+    const result = await deleteSingleProductService(productId);
     res.status(200).json({
       success: true,
       message: "Product deleted successfully!",

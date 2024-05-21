@@ -10,17 +10,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteSingleProduct = exports.updateSingleProduct = exports.getSingleProduct = exports.getProducts = exports.createProducts = void 0;
+const JoiValidatorProductSchema_1 = require("./JoiValidatorProductSchema");
 const product_services_1 = require("./product.services");
 // Create a product
 const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const productData = req.body;
-        const result = yield (0, product_services_1.createProductService)(productData);
-        res.status(200).json({
-            success: true,
-            message: "Product created successfully!",
-            data: result,
-        });
+        // Validation of data using JOI package
+        const { error, value } = JoiValidatorProductSchema_1.JoiValidatorProductSchema.validate(productData);
+        if (!error) {
+            const result = yield (0, product_services_1.createProductService)(value);
+            res.status(200).json({
+                success: true,
+                message: "Product created successfully!",
+                data: result,
+            });
+        }
+        else {
+            res.status(500).json({
+                success: false,
+                message: "An error occured while creating product!",
+                error: error === null || error === void 0 ? void 0 : error.details,
+            });
+        }
     }
     catch (error) {
         res.status(500).json({
@@ -72,8 +84,8 @@ exports.getProducts = getProducts;
 // Get a single product
 const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productID = req.params.productID;
-        const result = yield (0, product_services_1.getSingleProductService)(productID);
+        const productId = req.params.productId;
+        const result = yield (0, product_services_1.getSingleProductService)(productId);
         res.status(200).json({
             success: true,
             message: "Product fetched successfully!",
@@ -91,14 +103,25 @@ exports.getSingleProduct = getSingleProduct;
 // Update a single product
 const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productID = req.params.productId;
+        const productId = req.params.productId;
         const productData = req.body;
-        const result = yield (0, product_services_1.updateSingleProductService)(productID, productData);
-        res.status(200).json({
-            success: true,
-            message: "Product updated successfully!",
-            data: result,
-        });
+        // Validation of data using JOI package
+        const { error, value } = JoiValidatorProductSchema_1.JoiValidatorProductSchema.validate(productData);
+        if (!error) {
+            const result = yield (0, product_services_1.updateSingleProductService)(productId, value);
+            res.status(200).json({
+                success: true,
+                message: "Product updated successfully!",
+                data: result,
+            });
+        }
+        else {
+            res.status(500).json({
+                success: false,
+                message: "An error occured while updating your product!",
+                error: error === null || error === void 0 ? void 0 : error.details,
+            });
+        }
     }
     catch (error) {
         res.status(500).json({
@@ -109,10 +132,9 @@ const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
 });
 exports.updateSingleProduct = updateSingleProduct;
 const deleteSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // TODO: in assignment sample  "data": null <== this format should be followd. rather than deleted count 1
     try {
-        const productID = req.params.productId;
-        const result = yield (0, product_services_1.deleteSingleProductService)(productID);
+        const productId = req.params.productId;
+        const result = yield (0, product_services_1.deleteSingleProductService)(productId);
         res.status(200).json({
             success: true,
             message: "Product deleted successfully!",

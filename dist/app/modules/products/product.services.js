@@ -34,19 +34,22 @@ const getAllProductsService = (searchKey, data) => __awaiter(void 0, void 0, voi
 });
 exports.getAllProductsService = getAllProductsService;
 // Get single product
-const getSingleProductService = (productID) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.default.findOne({ _id: productID });
+const getSingleProductService = (productId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.default.findOne({ _id: productId });
     return result;
 });
 exports.getSingleProductService = getSingleProductService;
 // Update a single product
-const updateSingleProductService = (productID, productData) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.default.findByIdAndUpdate({ _id: productID }, productData);
+const updateSingleProductService = (productId, productData) => __awaiter(void 0, void 0, void 0, function* () {
+    // updating product
+    yield product_model_1.default.findByIdAndUpdate({ _id: productId }, productData);
+    // fetching updated data
+    const result = product_model_1.default.findOne({ _id: productId });
     return result;
 });
 exports.updateSingleProductService = updateSingleProductService;
-const deleteSingleProductService = (productID) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.default.deleteOne({ _id: productID });
+const deleteSingleProductService = (productId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield product_model_1.default.deleteOne({ _id: productId });
     return result;
 });
 exports.deleteSingleProductService = deleteSingleProductService;
