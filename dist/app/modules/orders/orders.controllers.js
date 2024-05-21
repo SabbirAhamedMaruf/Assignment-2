@@ -15,12 +15,32 @@ const orders_services_1 = require("./orders.services");
 const createSingleOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const currentOrderData = req.body;
-        const result = yield (0, orders_services_1.createSingleOrderService)(currentOrderData);
-        res.status(200).json({
-            success: true,
-            message: "Order created successfully!",
-            data: result,
-        });
+        // getting product quantity
+        const currentQuantity = yield (0, orders_services_1.getProductQuantity)(currentOrderData === null || currentOrderData === void 0 ? void 0 : currentOrderData.productId);
+        // Creating order
+        if ((currentQuantity === null || currentQuantity === void 0 ? void 0 : currentQuantity.quantity) > 0 && (currentQuantity === null || currentQuantity === void 0 ? void 0 : currentQuantity.inStock)) {
+            if ((currentQuantity === null || currentQuantity === void 0 ? void 0 : currentQuantity.quantity) - (currentOrderData === null || currentOrderData === void 0 ? void 0 : currentOrderData.quantity) >=
+                0) {
+                const result = yield (0, orders_services_1.createSingleOrderService)(currentOrderData);
+                res.status(200).json({
+                    success: true,
+                    message: "Order created successfully!",
+                    data: result,
+                });
+            }
+            else {
+                res.status(500).json({
+                    success: false,
+                    message: "Insufficient quantity in stock!",
+                });
+            }
+        }
+        else {
+            res.status(500).json({
+                success: false,
+                message: "Insufficient quantity in stock!",
+            });
+        }
     }
     catch (error) {
         res.status(500).json({

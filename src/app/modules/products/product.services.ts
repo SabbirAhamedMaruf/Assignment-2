@@ -1,9 +1,9 @@
-import productModel from "./product.model";
+import ProductModel from "./product.model";
 import { Products } from "./products.interface";
 
 // Create a product
 export const createProductService = async (productData: Products) => {
-  const result = await productModel.create(productData);
+  const result = await ProductModel.create(productData);
   return result;
 };
 
@@ -14,17 +14,17 @@ export const getAllProductsService = async (
 ) => {
   const removedDoubleQuete = data.replace(/"/g, "");
   if (searchKey) {
-    const result = await productModel.find({ [searchKey]: removedDoubleQuete });
+    const result = await ProductModel.find({ [searchKey]: removedDoubleQuete });
     return result;
   } else {
-    const result = await productModel.find();
+    const result = await ProductModel.find();
     return result;
   }
 };
 
 // Get single product
 export const getSingleProductService = async (productID: string) => {
-  const result = await productModel.findOne({ _id: productID });
+  const result = await ProductModel.findOne({ _id: productID });
   return result;
 };
 
@@ -33,7 +33,7 @@ export const updateSingleProductService = async (
   productID: string,
   productData: Products
 ) => {
-  const result = await productModel.findByIdAndUpdate(
+  const result = await ProductModel.findByIdAndUpdate(
     { _id: productID },
     productData
   );
@@ -41,6 +41,6 @@ export const updateSingleProductService = async (
 };
 
 export const deleteSingleProductService = async (productID: string) => {
-  const result = await productModel.deleteOne({ _id: productID });
+  const result = await ProductModel.deleteOne({ _id: productID });
   return result;
 };

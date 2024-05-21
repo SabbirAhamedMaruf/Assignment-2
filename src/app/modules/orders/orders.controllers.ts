@@ -1,16 +1,42 @@
 import { Request, Response } from "express";
-import { createSingleOrderService, getOrdersService } from "./orders.services";
+import {
+  createSingleOrderService,
+  getOrdersService,
+  getProductQuantity,
+} from "./orders.services";
 
 // Create order
 export const createSingleOrder = async (req: Request, res: Response) => {
   try {
     const currentOrderData = req.body;
-    const result = await createSingleOrderService(currentOrderData);
-    res.status(200).json({
-      success: true,
-      message: "Order created successfully!",
-      data: result,
-    });
+    // getting product quantity
+    const currentQuantity = await getProductQuantity(
+      currentOrderData?.productId
+    );
+    // Creating order
+    if ((currentQuantity?.quantity as number) > 0 && currentQuantity?.inStock) {
+      if (
+        (currentQuantity?.quantity as number) - currentOrderData?.quantity >=
+        0
+      ) {
+        const result = await createSingleOrderService(currentOrderData);
+        res.status(200).json({
+          success: true,
+          message: "Order created successfully!",
+          data: result,
+        });
+      } else {
+        res.status(500).json({
+          success: false,
+          message: "Insufficient quantity in stock!",
+        });
+      }
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "Insufficient quantity in stock!",
+      });
+    }
   } catch (error) {
     res.status(500).json({
       success: false,

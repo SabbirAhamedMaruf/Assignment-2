@@ -51,5 +51,5 @@ const productSchema = new mongoose_1.Schema({
         required: true,
     },
 });
-const productModel = (0, mongoose_1.model)("Products", productSchema);
-exports.default = productModel;
+const ProductModel = (0, mongoose_1.model)("Products", productSchema);
+exports.default = ProductModel;
