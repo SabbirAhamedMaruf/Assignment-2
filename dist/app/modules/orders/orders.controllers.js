@@ -31,14 +31,14 @@ const createSingleOrder = (req, res) => __awaiter(void 0, void 0, void 0, functi
             else {
                 res.status(500).json({
                     success: false,
-                    message: "Insufficient quantity in stock!",
+                    message: "Insufficient quantity available in inventory!",
                 });
             }
         }
         else {
             res.status(500).json({
                 success: false,
-                message: "Insufficient quantity in stock!",
+                message: "Insufficient quantity available in inventory!",
             });
         }
     }

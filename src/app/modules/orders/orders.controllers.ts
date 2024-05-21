@@ -28,13 +28,13 @@ export const createSingleOrder = async (req: Request, res: Response) => {
       } else {
         res.status(500).json({
           success: false,
-          message: "Insufficient quantity in stock!",
+          message: "Insufficient quantity available in inventory!",
         });
       }
     } else {
       res.status(500).json({
         success: false,
-        message: "Insufficient quantity in stock!",
+        message: "Insufficient quantity available in inventory!",
       });
     }
   } catch (error) {

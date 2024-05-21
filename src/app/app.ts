@@ -10,4 +10,12 @@ app.use(cors());
 // Routes will go here
 app.use("/api", ProductsRoute, OrderRoutes);
 
+// Handling unavilable routes
+app.all("*", (req: Request, res: Response) => {
+  res.status(404).json({
+    status: false,
+    message: "Route not found",
+  });
+});
+
 export default app;

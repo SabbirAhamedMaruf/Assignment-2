@@ -18,7 +18,7 @@ export const createSingleOrderService = async (orderData: any) => {
   // creating updated inventory data
   const updatedInventory = {
     quantity: productInventory.quantity - currentQuantity,
-    inStock: productInventory.quantity - currentQuantity > 0,
+    inStock: productInventory.quantity - currentQuantity > 0, // updating inStock status when quantity is 0
   };
   console.log("updatedInventory", updatedInventory);
   // updating product inventory

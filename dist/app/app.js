@@ -12,4 +12,11 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 // Routes will go here
 app.use("/api", products_route_1.ProductsRoute, orders_route_1.OrderRoutes);
+// Handling unavilable routes
+app.all("*", (req, res) => {
+    res.status(404).json({
+        status: false,
+        message: "Route not found",
+    });
+});
 exports.default = app;
