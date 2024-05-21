@@ -21,9 +21,16 @@ const createProductService = (productData) => __awaiter(void 0, void 0, void 0, 
 });
 exports.createProductService = createProductService;
 // Get all products
-const getAllProductsService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield product_model_1.default.find();
-    return result;
+const getAllProductsService = (searchKey, data) => __awaiter(void 0, void 0, void 0, function* () {
+    const removedDoubleQuete = data.replace(/"/g, "");
+    if (searchKey) {
+        const result = yield product_model_1.default.find({ [searchKey]: removedDoubleQuete });
+        return result;
+    }
+    else {
+        const result = yield product_model_1.default.find();
+        return result;
+    }
 });
 exports.getAllProductsService = getAllProductsService;
 // Get single product

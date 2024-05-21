@@ -8,9 +8,18 @@ export const createProductService = async (productData: Products) => {
 };
 
 // Get all products
-export const getAllProductsService = async () => {
-  const result = await productModel.find();
-  return result;
+export const getAllProductsService = async (
+  searchKey: string,
+  data: string
+) => {
+  const removedDoubleQuete = data.replace(/"/g, "");
+  if (searchKey) {
+    const result = await productModel.find({ [searchKey]: removedDoubleQuete });
+    return result;
+  } else {
+    const result = await productModel.find();
+    return result;
+  }
 };
 
 // Get single product

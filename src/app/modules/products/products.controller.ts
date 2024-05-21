@@ -27,18 +27,42 @@ export const createProducts = async (req: Request, res: Response) => {
 
 // Get all products
 export const getProducts = async (req: Request, res: Response) => {
-  try {
-    const result = await getAllProductsService();
-    res.status(200).json({
-      success: true,
-      message: "Products fetched successfully!",
-      data: result,
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "An error occured while fetching products!",
-    });
+  if (Object.keys(req?.query)?.length > 0) {
+    const searchKey = Object.keys(req.query)?.find(
+      (key) => key == ("name" || "category" || "description")
+    );
+    const data = req.query[searchKey as string];
+    if (searchKey) {
+      const result = await getAllProductsService(
+        searchKey as string,
+        data as string
+      );
+      res.status(200).json({
+        success: true,
+        message: "Products fetched successfully!",
+        data: result,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message:
+          "A product can be searched with name or category or description",
+      });
+    }
+  } else {
+    try {
+      const result = await getAllProductsService("", "");
+      res.status(200).json({
+        success: true,
+        message: "Products fetched successfully!",
+        data: result,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "An error occured while fetching products!",
+      });
+    }
   }
 };
 
@@ -80,6 +104,8 @@ export const updateSingleProduct = async (req: Request, res: Response) => {
 };
 
 export const deleteSingleProduct = async (req: Request, res: Response) => {
+  // TODO: in assignment sample  "data": null <== this format should be followd. rather than deleted count 1
+
   try {
     const productID = req.params.productId;
     const result = await deleteSingleProductService(productID);

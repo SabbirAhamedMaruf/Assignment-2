@@ -32,19 +32,40 @@ const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.createProducts = createProducts;
 // Get all products
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const result = yield (0, product_services_1.getAllProductsService)();
-        res.status(200).json({
-            success: true,
-            message: "Products fetched successfully!",
-            data: result,
-        });
+    var _a, _b;
+    if (((_a = Object.keys(req === null || req === void 0 ? void 0 : req.query)) === null || _a === void 0 ? void 0 : _a.length) > 0) {
+        const searchKey = (_b = Object.keys(req.query)) === null || _b === void 0 ? void 0 : _b.find((key) => key == ("name" || "category" || "description"));
+        const data = req.query[searchKey];
+        if (searchKey) {
+            const result = yield (0, product_services_1.getAllProductsService)(searchKey, data);
+            res.status(200).json({
+                success: true,
+                message: "Products fetched successfully!",
+                data: result,
+            });
+        }
+        else {
+            res.status(500).json({
+                success: false,
+                message: "A product can be searched with name or category or description",
+            });
+        }
     }
-    catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "An error occured while fetching products!",
-        });
+    else {
+        try {
+            const result = yield (0, product_services_1.getAllProductsService)("", "");
+            res.status(200).json({
+                success: true,
+                message: "Products fetched successfully!",
+                data: result,
+            });
+        }
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "An error occured while fetching products!",
+            });
+        }
     }
 });
 exports.getProducts = getProducts;
@@ -88,6 +109,7 @@ const updateSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, func
 });
 exports.updateSingleProduct = updateSingleProduct;
 const deleteSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // TODO: in assignment sample  "data": null <== this format should be followd. rather than deleted count 1
     try {
         const productID = req.params.productId;
         const result = yield (0, product_services_1.deleteSingleProductService)(productID);
