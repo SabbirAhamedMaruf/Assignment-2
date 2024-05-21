@@ -25,5 +25,5 @@
   ```
     npm i nodemon
 
-    nodemon ./dist/app/server.js
+    nodemon ./dist/server.js
   ```
