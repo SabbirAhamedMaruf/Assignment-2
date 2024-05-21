@@ -11,7 +11,7 @@ const router = express.Router();
 
 // Create product
 router.post("/products", createProducts);
-// Get all products
+// Get all products or search by specific criteria
 router.get("/products", getProducts);
 // Get single product
 router.get("/products/:productId", getSingleProduct);

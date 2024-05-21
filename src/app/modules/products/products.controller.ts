@@ -46,7 +46,7 @@ export const getProducts = async (req: Request, res: Response) => {
       res.status(500).json({
         success: false,
         message:
-          "A product can be searched with name or category or description",
+          "Products can be searched with name or category or description",
       });
     }
   } else {

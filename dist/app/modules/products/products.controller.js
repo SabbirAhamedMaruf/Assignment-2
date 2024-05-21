@@ -47,7 +47,7 @@ const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         else {
             res.status(500).json({
                 success: false,
-                message: "A product can be searched with name or category or description",
+                message: "Products can be searched with name or category or description",
             });
         }
     }
